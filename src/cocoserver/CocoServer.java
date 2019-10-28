@@ -8,6 +8,8 @@ package cocoserver;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,13 +17,13 @@ import java.net.Socket;
  */
 public class CocoServer {
 
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+             List<ServerManagment> conexiones=new ArrayList<ServerManagment>();
         // TODO code application logic here
-    
-    
      while(true){
         ServerSocket server;
         Socket vinculo;
@@ -33,8 +35,12 @@ public class CocoServer {
         server = new ServerSocket(1234);
         vinculo=server.accept(); // El sistema se va a parar aqui hasta que reciva algo el socket
         System.out.println("Conectado");
-        ServerManagment hilo=new ServerManagment(vinculo);
+        ServerManagment hilo=new ServerManagment(vinculo,conexiones);
         hilo.start();
+                conexiones.add(hilo);
+                
+      
+        
         
          //vinculo.getOutputStream().write('P');
          
@@ -56,7 +62,7 @@ public class CocoServer {
         
         }
     }
-    
+   
     
     
     

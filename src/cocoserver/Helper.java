@@ -22,7 +22,7 @@ public class Helper {
 
     public Helper() {
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/ceti6h1", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/chat", "root", "");
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
@@ -31,4 +31,19 @@ public class Helper {
         }
 
     }
+    
+       public void createUser(Object d) {
+           
+           
+        PreparedStatement sql;
+        try {
+            sql = con.prepareStatement("INSERT INTO `usuario` (`usuario`, `nombre`, `apellidos`, `contrasena`, `correo`, `conectado`, `idPreguntaRecuperacion`, `respuestaRecuperacion`) VALUES ('"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', 'N', '"+d.toString()+"', '"+d.toString()+"');");
+            sql.execute();
+            System.out.println();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
 }

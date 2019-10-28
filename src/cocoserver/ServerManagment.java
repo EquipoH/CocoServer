@@ -7,24 +7,33 @@ package cocoserver;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 /**
  *
  * @author Usuario
  */
 public class ServerManagment extends Thread{
+    List<ServerManagment> conexiones;
        String msg="HÓLA";
        Socket vinculo;
        
-    ServerManagment(Socket _vinculo){
+       
+    ServerManagment(Socket _vinculo,List<ServerManagment> conexiones){
     this.vinculo= _vinculo;
+    this.conexiones=conexiones;
     }
     
     @Override
     public void run(){
         try{
-        vinculo.getOutputStream().write(msg.getBytes());//Enviar un arreglo de bytes
+        
+        while(true){
+            vinculo.getOutputStream().write(msg.getBytes());//Enviar un arreglo de bytes
                 System.out.println("En el hilo");
+        }        
+                
+                
         }catch(IOException ex){
         
         }
