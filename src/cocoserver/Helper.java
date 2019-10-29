@@ -16,8 +16,8 @@ import java.sql.SQLException;
  * @author Lenovo
  */
 public class Helper {
-    
- protected Connection con;
+
+    protected Connection con;
     ResultSet r;
 
     public Helper() {
@@ -31,19 +31,21 @@ public class Helper {
         }
 
     }
-    
-       public void createUser(Object d) {
-           
-           
+
+    public void iniciarSesion(String user, String password) {
+
         PreparedStatement sql;
         try {
-            sql = con.prepareStatement("INSERT INTO `usuario` (`usuario`, `nombre`, `apellidos`, `contrasena`, `correo`, `conectado`, `idPreguntaRecuperacion`, `respuestaRecuperacion`) VALUES ('"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', '"+d.toString()+"', 'N', '"+d.toString()+"', '"+d.toString()+"');");
-            sql.execute();
-            System.out.println();
+            sql = con.prepareStatement("SELECT * FROM `usuario` where correo=" + user + " and contrasena=" + password + "");
+            ResultSet rs = sql.executeQuery();
+            while (rs.next()) {
+                System.out.println("rs.getString(\"nombre\");");
+                
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
     }
-    
+
 }

@@ -37,7 +37,7 @@ public class CocoServer {
         System.out.println("Conectado");
         ServerManagment hilo=new ServerManagment(vinculo,conexiones);
         hilo.start();
-                conexiones.add(hilo);
+        conexiones.add(hilo);
                 
       
         
