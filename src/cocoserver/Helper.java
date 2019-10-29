@@ -36,10 +36,10 @@ public class Helper {
 
         PreparedStatement sql;
         try {
-            sql = con.prepareStatement("SELECT * FROM `usuario` where correo=" + user + " and contrasena=" + password + "");
+            sql = con.prepareStatement("SELECT * FROM usuario where correo='" + user + "' and contrasena='" + password + "'");
             ResultSet rs = sql.executeQuery();
             while (rs.next()) {
-                System.out.println("rs.getString(\"nombre\");");
+                System.out.println(rs.getString("nombre"));
                 
             }
         } catch (SQLException e) {

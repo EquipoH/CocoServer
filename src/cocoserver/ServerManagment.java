@@ -34,7 +34,7 @@ public class ServerManagment extends Thread {
             Helper helper=new Helper();
            
 
-            salida.writeUTF("Hola");
+            salida.writeUTF("Hola Usted se conecto a COCOServer");
 
             System.out.println("En el hilo");
             while (true) {
@@ -47,6 +47,10 @@ public class ServerManagment extends Thread {
                 if (opcion.equalsIgnoreCase("a")) {
                     //inciar sesion
                     System.out.println("Se intenta iniciar sesion desde: " + vinculo.getLocalAddress());
+                    String datos=entrada.readUTF();
+                    System.out.println("Datos: "+datos);
+                    String [] arregloDatos=datos.split("/");
+                    helper.iniciarSesion(arregloDatos[0],arregloDatos[1]);
                     
 
                 } else if (opcion.equals("b")) {
