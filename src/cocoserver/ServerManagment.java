@@ -1,23 +1,27 @@
 package cocoserver;
 
-import java.io.BufferedReader;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import com.google.gson.Gson;
+import java.io.DataInputStream;
 import java.net.Socket;
 import java.util.List;
+import pojos.pojoUsuario;
 
 /**
  *
- * @author Usuario
+// * @author Usuario
  */
 public class ServerManagment extends Thread {
 
     List<ServerManagment> conexiones;
-    String msg = "HOLA";
+
     Socket vinculo;
 
+    
+    
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
         this.conexiones = conexiones;
@@ -26,17 +30,19 @@ public class ServerManagment extends Thread {
     @Override
     public void run() {
         try {
+            System.out.println("en el hilo");
             DataInputStream entrada;
             DataOutputStream salida;
-            entrada = new DataInputStream(vinculo.getInputStream());
-
+            
             salida = new DataOutputStream(vinculo.getOutputStream());
-            Helper helper=new Helper();
-           
-
+            entrada = new DataInputStream(vinculo.getInputStream());
+            
+            
+            
+            Helper helper = new Helper();
+         
             salida.writeUTF("Hola Usted se conecto a COCOServer");
-
-            System.out.println("En el hilo");
+            
             while (true) {
                 if (vinculo.isClosed()) {
                     System.out.println("Socket desconectado");
@@ -47,11 +53,27 @@ public class ServerManagment extends Thread {
                 if (opcion.equalsIgnoreCase("a")) {
                     //inciar sesion
                     System.out.println("Se intenta iniciar sesion desde: " + vinculo.getLocalAddress());
-                    String datos=entrada.readUTF();
-                    System.out.println("Datos: "+datos);
-                    String [] arregloDatos=datos.split("/");
-                    helper.iniciarSesion(arregloDatos[0],arregloDatos[1]);
-                    
+                    String datos = entrada.readUTF();
+                    System.out.println("Datos: " + datos);
+                    String[] arregloDatos = datos.split("/");
+                    pojoUsuario user = helper.iniciarSesion(arregloDatos[0], arregloDatos[1]);
+                    if(user==null){
+                        //se envia que el usuario no existe
+                        salida.writeUTF("null");
+                    }else{
+                       Gson gson=new Gson();
+                         salida.writeUTF(gson.toJson(user));
+                    }
+             
+                   
+//                   System.out.println(user);
+//                    System.out.println(user.getUsuario());
+//                    System.out.println(user.getNombre());
+//                    System.out.println(user.getApellidos());
+//                    System.out.println(user.getCorreo());
+//                    System.out.println(user.getConectado());
+//                    System.out.println(user.getIdPreguntaRecuperacion());
+//                    System.out.println(user.getRespuestaRecuperacion());
 
                 } else if (opcion.equals("b")) {
                     //registro
@@ -69,7 +91,8 @@ public class ServerManagment extends Thread {
             }
 
         } catch (IOException ex) {
-
+            System.out.println("hubo un error en:");
+            System.out.println(ex.toString());
         }
     }
 

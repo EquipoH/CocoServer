@@ -1,5 +1,8 @@
 package pojos;
-public class pojoUsuario 
+
+import java.io.Serializable;
+
+public class pojoUsuario implements Serializable
 {
     private String usuario;
     private String nombre;

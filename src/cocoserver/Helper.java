@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import pojos.pojoUsuario;
 
 /**
  *
@@ -32,20 +33,28 @@ public class Helper {
 
     }
 
-    public void iniciarSesion(String user, String password) {
-
+    /**
+     * Funcion consulta la informacion y retona un pojo de tipo usuario
+     * @param user coorreo del usuario
+     * @param password contraseña del usuario
+     * @return retona un objeto pojo el cual contiene toda la informacion de la base de datos
+     */
+    public pojoUsuario iniciarSesion(String user, String password) {
+        pojoUsuario datos = null;
         PreparedStatement sql;
         try {
             sql = con.prepareStatement("SELECT * FROM usuario where correo='" + user + "' and contrasena='" + password + "'");
             ResultSet rs = sql.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString("nombre"));
-                
+
+                datos = new pojoUsuario(rs.getString("usuario"), rs.getString("nombre"), rs.getString("apellidos"), rs.getString("contrasena"), rs.getString("correo"), rs.getString("conectado").charAt(0), rs.getInt("idPreguntaRecuperacion"), rs.getString("respuestaRecuperacion"));
+
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        return datos;
     }
 
 }

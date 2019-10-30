@@ -32,7 +32,7 @@ public class CocoServer {
        //byte[] arreglo;
        // arreglo= new byte[100];
         try{
-        server = new ServerSocket(1234);
+        server = new ServerSocket(123);
         vinculo=server.accept(); // El sistema se va a parar aqui hasta que reciva algo el socket
         System.out.println("Conectado");
         ServerManagment hilo=new ServerManagment(vinculo,conexiones);
@@ -58,6 +58,7 @@ public class CocoServer {
         //algo = OS.getInputStream().read();// .read devuelve un asccii
         }
        catch(IOException ex){  
+       
         } 
         
         }
