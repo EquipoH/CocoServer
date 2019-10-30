@@ -1,6 +1,5 @@
 package cocoserver;
 
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,16 +11,15 @@ import pojos.pojoUsuario;
 
 /**
  *
-// * @author Usuario
+ * // * @author Usuario
  */
 public class ServerManagment extends Thread {
 
     List<ServerManagment> conexiones;
 
     Socket vinculo;
+    public String user;
 
-    
-    
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
         this.conexiones = conexiones;
@@ -30,25 +28,24 @@ public class ServerManagment extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("en el hilo");
+            System.out.println("Nuevo hilo creado");
             DataInputStream entrada;
             DataOutputStream salida;
-            
+
             salida = new DataOutputStream(vinculo.getOutputStream());
             entrada = new DataInputStream(vinculo.getInputStream());
-            
-            
-            
+
             Helper helper = new Helper();
-         
+
             salida.writeUTF("Hola Usted se conecto a COCOServer");
-            
+
             while (true) {
                 if (vinculo.isClosed()) {
                     System.out.println("Socket desconectado");
                     this.stop();
                 }
                 String opcion = entrada.readUTF();
+                System.out.println("Se leyo la entrada");
 
                 if (opcion.equalsIgnoreCase("a")) {
                     //inciar sesion
@@ -57,15 +54,15 @@ public class ServerManagment extends Thread {
                     System.out.println("Datos: " + datos);
                     String[] arregloDatos = datos.split("/");
                     pojoUsuario user = helper.iniciarSesion(arregloDatos[0], arregloDatos[1]);
-                    if(user==null){
+                    this.user=user.getCorreo();
+                    if (user == null) {
                         //se envia que el usuario no existe
                         salida.writeUTF("null");
-                    }else{
-                       Gson gson=new Gson();
-                         salida.writeUTF(gson.toJson(user));
+                    } else {
+                        Gson gson = new Gson();
+                        salida.writeUTF(gson.toJson(user));
                     }
-             
-                   
+
 //                   System.out.println(user);
 //                    System.out.println(user.getUsuario());
 //                    System.out.println(user.getNombre());
@@ -74,10 +71,24 @@ public class ServerManagment extends Thread {
 //                    System.out.println(user.getConectado());
 //                    System.out.println(user.getIdPreguntaRecuperacion());
 //                    System.out.println(user.getRespuestaRecuperacion());
-
                 } else if (opcion.equals("b")) {
                     //registro
                     System.out.println("Se intenta hacer un registro  desde: " + vinculo.getLocalAddress());
+                    String datos =entrada.readUTF();
+                      Gson gson=new Gson();
+                        pojoUsuario user = gson.fromJson(datos , pojoUsuario.class);
+                        
+                        boolean s=helper.crearRegistro(user);
+                        if(s){
+                            System.out.println("Se hizo un registro de nuevo usuario desde "+vinculo.getLocalAddress());
+                            salida.writeUTF("true");
+                        }else{
+                            salida.writeUTF("false");
+                        }
+                    
+                    
+                    
+                    
                 } else if (opcion.equals("c")) {
                     //mandar mensaje
                     System.out.println("Se intenta mandar un mensaje desde: " + vinculo.getLocalAddress());
@@ -85,7 +96,21 @@ public class ServerManagment extends Thread {
                     System.out.println(opcion);
                     //buscar informacion
                     System.out.println("Se solicita informacion desde desde: " + vinculo.getLocalAddress());
-
+                    System.out.println("");
+                }else if (opcion.equals("e")) {
+                    //buscar informacion
+                  
+                    System.out.println("Se solicita contraseña desde: " + vinculo.getLocalAddress());
+                
+                    String datos =entrada.readUTF();
+                    String[] info=datos.split("/");
+                    String response=helper.restorePassword(info[0], info[1]);
+                    salida.writeUTF(response);
+                    
+                    
+                    
+                    
+                
                 }
 
             }
