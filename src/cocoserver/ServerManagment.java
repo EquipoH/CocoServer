@@ -30,10 +30,7 @@ public class ServerManagment extends Thread {
         try {
             System.out.println("Nuevo hilo creado");
 
-            for (ServerManagment usuario : conexiones) {
-                System.out.println(usuario.user);
-            }
-
+        
             DataInputStream entrada;
             DataOutputStream salida;
 
@@ -45,10 +42,24 @@ public class ServerManagment extends Thread {
             salida.writeUTF("Hola Usted se conecto a COCOServer");
 
             while (true) {
-                if (vinculo.isClosed()) {
-                    System.out.println("Socket desconectado");
-                    this.stop();
-                }
+                     
+        for(ServerManagment conexion : conexiones){
+            if(conexion.vinculo.isClosed()){
+                conexiones.remove(conexion);
+            }
+        }
+         System.out.println("conexiones activas");
+        for(ServerManagment conexion : conexiones){
+            if(conexion.vinculo.isClosed()){
+                System.out.println(conexion.user);
+                System.out.println("cerrado");
+            }else{
+                System.out.println(conexion.user);
+                System.out.println("abierto");
+            
+            }
+        } 
+               
                 String opcion = entrada.readUTF();
                 System.out.println("Se leyo la entrada");
 
@@ -59,11 +70,12 @@ public class ServerManagment extends Thread {
                     System.out.println("Datos: " + datos);
                     String[] arregloDatos = datos.split("/");
                     pojoUsuario user = helper.iniciarSesion(arregloDatos[0], arregloDatos[1]);
-                    this.user = user.getCorreo();
+                  
                     if (user == null) {
                         //se envia que el usuario no existe
                         salida.writeUTF("null");
                     } else {
+                          this.user = user.getCorreo();
                         Gson gson = new Gson();
                         salida.writeUTF(gson.toJson(user));
                     }

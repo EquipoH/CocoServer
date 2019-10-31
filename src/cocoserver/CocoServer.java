@@ -27,10 +27,8 @@ public class CocoServer {
      while(true){
         ServerSocket server;
         Socket vinculo;
-        //int algo;
-     
-       //byte[] arreglo;
-       // arreglo= new byte[100];
+      
+   
         try{
         server = new ServerSocket(123);
         vinculo=server.accept(); // El sistema se va a parar aqui hasta que reciva algo el socket
@@ -39,23 +37,7 @@ public class CocoServer {
         hilo.start();
         conexiones.add(hilo);
                 
-      
-        
-        
-         //vinculo.getOutputStream().write('P');
-         
-       // System.out.println(vinculo.getInputStream().read());
-        
-        
-        //vinculo.getInputStream().read(arreglo);
-        //String me=new String(arreglo);
-            //System.out.println(arreglo);
- 
-        
-        
-        //Siemrpe tenemos que cerrar el servidor del socket y cerrar el socket,  PRIMERO CIERRO SOCKET despues CIERRO SERVIDOR server.close(). vinculo.close().
-        //Nota: Poner pausas en ciertas partes ya que el los clientes dependiendo desde donde entre (de la compu) trabajan a diferentes velocidades por lo que ponemos pausas System.in.read();
-        //algo = OS.getInputStream().read();// .read devuelve un asccii
+   
         }
        catch(IOException ex){  
        
