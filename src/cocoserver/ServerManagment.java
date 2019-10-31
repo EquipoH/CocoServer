@@ -125,6 +125,17 @@ public class ServerManagment extends Thread {
 
                     salida.writeUTF(usuarios);
 
+                }else if (opcion.equals("h")) {
+                    //usuarios conectados
+
+                    System.out.println("Se solicito amigos desde: " + vinculo.getLocalAddress());
+                    String usuarios = "";
+                    for (ServerManagment usuario : conexiones) {
+                        usuarios += usuario.user + "/";
+                    }
+
+                    salida.writeUTF(usuarios);
+
                 }
 
             }
