@@ -136,6 +136,16 @@ public class ServerManagment extends Thread {
 
                     salida.writeUTF(listasDeAmigos);
 
+                }else if(opcion.equals("i")){
+                    //amigos de una lista de maigos
+
+                    System.out.println("Se solicitaron los amigos desde: " + vinculo.getLocalAddress());
+                    String amigos = "";
+                    for (ServerManagment amigo : conexiones) {
+                        amigos += amigo.user + "/";
+                    }
+
+                    salida.writeUTF(amigos);
                 }
 
             }
