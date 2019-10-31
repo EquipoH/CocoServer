@@ -17,43 +17,32 @@ import java.util.List;
  */
 public class CocoServer {
 
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-             List<ServerManagment> conexiones=new ArrayList<ServerManagment>();
-        // TODO code application logic here
-     while(true){
-        ServerSocket server;
-        Socket vinculo;
-      
-   
-        try{
-        server = new ServerSocket(123);
-        vinculo=server.accept(); // El sistema se va a parar aqui hasta que reciva algo el socket
-        System.out.println("Conectado");
-        ServerManagment hilo=new ServerManagment(vinculo,conexiones);
-        hilo.start();
-        conexiones.add(hilo);
-                
-   
-        }
-       catch(IOException ex){  
-       
-        } 
+        List<ServerManagment> conexiones = new ArrayList<ServerManagment>();
         
+       
+        // TODO code application logic here
+        while (true) {
+            ServerSocket server;
+            Socket vinculo;
+
+            try {
+                server = new ServerSocket(123);
+                vinculo = server.accept(); // El sistema se va a parar aqui hasta que reciva algo el socket
+                System.out.println("Conectado");
+                ServerManagment hilo = new ServerManagment(vinculo, conexiones);
+                hilo.start();
+                conexiones.add(hilo);
+
+            } catch (IOException ex) {
+                 
+       
+            }
+
         }
     }
-   
-    
-    
-    
-    
-    
-    
-    
-    }
-    
 
-
+}

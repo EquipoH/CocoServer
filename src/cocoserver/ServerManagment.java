@@ -42,24 +42,7 @@ public class ServerManagment extends Thread {
             salida.writeUTF("Hola Usted se conecto a COCOServer");
 
             while (true) {
-                     
-        for(ServerManagment conexion : conexiones){
-            if(conexion.vinculo.isClosed()){
-                conexiones.remove(conexion);
-            }
-        }
-         System.out.println("conexiones activas");
-        for(ServerManagment conexion : conexiones){
-            if(conexion.vinculo.isClosed()){
-                System.out.println(conexion.user);
-                System.out.println("cerrado");
-            }else{
-                System.out.println(conexion.user);
-                System.out.println("abierto");
-            
-            }
-        } 
-               
+              
                 String opcion = entrada.readUTF();
                 System.out.println("Se leyo la entrada");
 
@@ -137,8 +120,13 @@ public class ServerManagment extends Thread {
             }
 
         } catch (IOException ex) {
-            System.out.println("hubo un error en:");
-            System.out.println(ex.toString());
+            System.out.println("se cerro la conexion");
+            conexiones.remove(this);
+            this.stop();
+           
+             
+      
+        
         }
     }
 
