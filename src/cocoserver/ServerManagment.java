@@ -18,7 +18,7 @@ public class ServerManagment extends Thread {
     List<ServerManagment> conexiones;
 
     Socket vinculo;
-    public String user;
+    public String user="sin usuario aun";
 
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
@@ -29,6 +29,11 @@ public class ServerManagment extends Thread {
     public void run() {
         try {
             System.out.println("Nuevo hilo creado");
+            
+            for(ServerManagment usuario:conexiones){
+                System.out.println(usuario.user);
+        }
+            
             DataInputStream entrada;
             DataOutputStream salida;
 
@@ -54,7 +59,7 @@ public class ServerManagment extends Thread {
                     System.out.println("Datos: " + datos);
                     String[] arregloDatos = datos.split("/");
                     pojoUsuario user = helper.iniciarSesion(arregloDatos[0], arregloDatos[1]);
-                    this.user=user.getCorreo();
+                    this.user = user.getCorreo();
                     if (user == null) {
                         //se envia que el usuario no existe
                         salida.writeUTF("null");
@@ -74,21 +79,18 @@ public class ServerManagment extends Thread {
                 } else if (opcion.equals("b")) {
                     //registro
                     System.out.println("Se intenta hacer un registro  desde: " + vinculo.getLocalAddress());
-                    String datos =entrada.readUTF();
-                      Gson gson=new Gson();
-                        pojoUsuario user = gson.fromJson(datos , pojoUsuario.class);
-                        
-                        boolean s=helper.crearRegistro(user);
-                        if(s){
-                            System.out.println("Se hizo un registro de nuevo usuario desde "+vinculo.getLocalAddress());
-                            salida.writeUTF("true");
-                        }else{
-                            salida.writeUTF("false");
-                        }
-                    
-                    
-                    
-                    
+                    String datos = entrada.readUTF();
+                    Gson gson = new Gson();
+                    pojoUsuario user = gson.fromJson(datos, pojoUsuario.class);
+
+                    boolean s = helper.crearRegistro(user);
+                    if (s) {
+                        System.out.println("Se hizo un registro de nuevo usuario desde " + vinculo.getLocalAddress());
+                        salida.writeUTF("true");
+                    } else {
+                        salida.writeUTF("false");
+                    }
+
                 } else if (opcion.equals("c")) {
                     //mandar mensaje
                     System.out.println("Se intenta mandar un mensaje desde: " + vinculo.getLocalAddress());
@@ -97,20 +99,16 @@ public class ServerManagment extends Thread {
                     //buscar informacion
                     System.out.println("Se solicita informacion desde desde: " + vinculo.getLocalAddress());
                     System.out.println("");
-                }else if (opcion.equals("e")) {
+                } else if (opcion.equals("e")) {
                     //buscar informacion
-                  
+
                     System.out.println("Se solicita contraseña desde: " + vinculo.getLocalAddress());
-                
-                    String datos =entrada.readUTF();
-                    String[] info=datos.split("/");
-                    String response=helper.restorePassword(info[0], info[1]);
+
+                    String datos = entrada.readUTF();
+                    String[] info = datos.split("/");
+                    String response = helper.restorePassword(info[0], info[1]);
                     salida.writeUTF(response);
-                    
-                    
-                    
-                    
-                
+
                 }
 
             }
