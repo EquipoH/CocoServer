@@ -5,11 +5,17 @@
  */
 package cocoserver;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import static java.awt.PageAttributes.MediaType.A;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import pojos.pojoGrupo;
+import  java.lang.reflect.Type;
 import pojos.pojoUsuario;
 
 /**
@@ -61,43 +67,39 @@ public class Helper {
 
     public boolean crearRegistro(pojoUsuario user) {
         boolean result = false;
-        PreparedStatement sql,SQL2;
+        PreparedStatement sql, SQL2;
         try {
             sql = con.prepareStatement("INSERT INTO `usuario` (`usuario`, `nombre`, `apellidos`, `contrasena`, `correo`, `conectado`, `idPreguntaRecuperacion`, `respuestaRecuperacion`) VALUES ('" + user.getCorreo() + "', '" + user.getNombre() + "', '" + user.getApellidos() + "', '" + user.getContrasena() + "', '" + user.getCorreo() + "', 'N', '1', '" + user.getRespuestaRecuperacion() + "')");
             sql.execute();
-           
-            
+
             SQL2 = con.prepareStatement("SELECT * FROM usuario where correo='" + user.getCorreo() + "' and contrasena='" + user.getContrasena() + "'");
             ResultSet rs = SQL2.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 result = true;
 
             }
-            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return result;
     }
-    
-     public String restorePassword(String correo,String color) {
-        String response="null";
+
+    public String restorePassword(String correo, String color) {
+        String response = "null";
         PreparedStatement SQL2;
         try {
-           
+
             System.out.println(correo);
             System.out.println(color);
-            
-            
+
             SQL2 = con.prepareStatement("SELECT contrasena FROM usuario where correo='" + correo + "' and respuestaRecuperacion='" + color + "'");
             ResultSet rs = SQL2.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 System.out.println("enttroooooo");
-                response=rs.getString("contrasena");
+                response = rs.getString("contrasena");
 
             }
-            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -105,4 +107,41 @@ public class Helper {
         return response;
     }
 
+    public String getGrupos(String user) {
+        String response = "null";
+        PreparedStatement SQL2;
+          Gson gson=new Gson();
+        ArrayList<pojoGrupo> arreglo=new ArrayList<pojoGrupo>();
+      
+      // Type listType = new TypeToken<ArrayList<pojoGrupo>>(){}.getType();
+        
+        
+        try {
+
+          
+            System.out.println("aui estoy");
+            SQL2 = con.prepareStatement("SELECT * FROM `grupo` where dueno='"+user+"'");
+            ResultSet rs = SQL2.executeQuery();
+            while (rs.next()) {
+                System.out.println("Entre al ciclo");
+                pojoGrupo pojo=new pojoGrupo(rs.getInt("idGrupo"),rs.getString("nombre"),rs.getString("dueno"));
+                arreglo.add(pojo);
+
+            }
+            System.out.println("ser termino la busqueda");
+            if(arreglo.isEmpty()){
+                System.out.println("esta vacia");
+            }else{
+             response=gson.toJson(arreglo);
+             System.out.println(response);
+            }
+            System.out.println("hasta aqui todo bien");
+            
+            
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
+    }
 }

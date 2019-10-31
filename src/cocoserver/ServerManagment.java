@@ -118,12 +118,12 @@ public class ServerManagment extends Thread {
                     //usuarios conectados
 
                     System.out.println("Se solicito grupos desde: " + vinculo.getLocalAddress());
-                    String usuarios = "";
-                    for (ServerManagment usuario : conexiones) {
-                        usuarios += usuario.user + "/";
-                    }
-
-                    salida.writeUTF(usuarios);
+                    String user =entrada.readUTF();
+                    System.out.println("el usuario a bucasr"+user);
+                    String grupos=helper.getGrupos(user);
+                    
+                    
+                    salida.writeUTF(grupos);
 
                 }else if (opcion.equals("h")) {
                     //usuarios conectados
