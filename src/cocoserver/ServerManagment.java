@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.net.Socket;
 import java.util.List;
+import pojos.pojoMensajesPendientes;
 import pojos.pojoUsuario;
 
 /**
@@ -20,6 +21,8 @@ public class ServerManagment extends Thread {
     Socket vinculo;
     public String user = "sin usuario aun";
 
+            public DataInputStream entrada;
+            public DataOutputStream salida;
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
         this.conexiones = conexiones;
@@ -30,8 +33,6 @@ public class ServerManagment extends Thread {
         try {
             System.out.println("Nuevo hilo creado");
 
-            DataInputStream entrada;
-            DataOutputStream salida;
 
             salida = new DataOutputStream(vinculo.getOutputStream());
             entrada = new DataInputStream(vinculo.getInputStream());
@@ -88,6 +89,23 @@ public class ServerManagment extends Thread {
                 } else if (opcion.equals("c")) {
                     //mandar mensaje
                     System.out.println("Se intenta mandar un mensaje desde: " + vinculo.getLocalAddress());
+                    String mensaje=entrada.readUTF();
+                    Gson gson=new Gson();
+                    pojoMensajesPendientes o=gson.fromJson(mensaje,pojoMensajesPendientes.class);
+                    boolean flat=false;
+                    for (ServerManagment serverma:conexiones){
+                        if(o.getDestinatario().equals(serverma.user)){
+                            serverma.salida.writeUTF(mensaje);
+                            flat=true;
+                            
+                        }
+                    }
+                    if(!flat){
+                        //mandar mensjae a la base de datos 
+                    }
+                    
+                    
+                    
                 } else if (opcion.equals("d")) {
                     System.out.println(opcion);
                     //buscar informacion
