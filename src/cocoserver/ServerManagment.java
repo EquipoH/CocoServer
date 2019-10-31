@@ -30,7 +30,6 @@ public class ServerManagment extends Thread {
         try {
             System.out.println("Nuevo hilo creado");
 
-        
             DataInputStream entrada;
             DataOutputStream salida;
 
@@ -42,7 +41,7 @@ public class ServerManagment extends Thread {
             salida.writeUTF("Hola Usted se conecto a COCOServer");
 
             while (true) {
-              
+
                 String opcion = entrada.readUTF();
                 System.out.println("Se leyo la entrada");
 
@@ -53,12 +52,12 @@ public class ServerManagment extends Thread {
                     System.out.println("Datos: " + datos);
                     String[] arregloDatos = datos.split("/");
                     pojoUsuario user = helper.iniciarSesion(arregloDatos[0], arregloDatos[1]);
-                  
+
                     if (user == null) {
                         //se envia que el usuario no existe
                         salida.writeUTF("null");
                     } else {
-                          this.user = user.getCorreo();
+                        this.user = user.getCorreo();
                         Gson gson = new Gson();
                         salida.writeUTF(gson.toJson(user));
                     }
@@ -107,7 +106,18 @@ public class ServerManagment extends Thread {
                 } else if (opcion.equals("f")) {
                     //usuarios conectados
 
-                    System.out.println("Se usuarios conectados desde: " + vinculo.getLocalAddress());
+                    System.out.println("Se solicito usuarios conectados desde: " + vinculo.getLocalAddress());
+                    String usuarios = "";
+                    for (ServerManagment usuario : conexiones) {
+                        usuarios += usuario.user + "/";
+                    }
+
+                    salida.writeUTF(usuarios);
+
+                } else if (opcion.equals("g")) {
+                    //usuarios conectados
+
+                    System.out.println("Se solicito grupos desde: " + vinculo.getLocalAddress());
                     String usuarios = "";
                     for (ServerManagment usuario : conexiones) {
                         usuarios += usuario.user + "/";
@@ -123,10 +133,7 @@ public class ServerManagment extends Thread {
             System.out.println("se cerro la conexion");
             conexiones.remove(this);
             this.stop();
-           
-             
-      
-        
+
         }
     }
 
