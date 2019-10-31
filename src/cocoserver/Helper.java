@@ -205,4 +205,25 @@ public class Helper {
         return response;
     }
     
+     public boolean enviarSolicitud(String remitente,String destino) {
+//        boolean result = false;
+//        PreparedStatement sql, SQL2;
+//        try {
+//            sql = con.prepareStatement("INSERT INTO `usuario` (`usuario`, `nombre`, `apellidos`, `contrasena`, `correo`, `conectado`, `idPreguntaRecuperacion`, `respuestaRecuperacion`) VALUES ('" + user.getCorreo() + "', '" + user.getNombre() + "', '" + user.getApellidos() + "', '" + user.getContrasena() + "', '" + user.getCorreo() + "', 'N', '1', '" + user.getRespuestaRecuperacion() + "')");
+//            sql.execute();
+//
+//            SQL2 = con.prepareStatement("SELECT * FROM usuario where correo='" + user.getCorreo() + "' and contrasena='" + user.getContrasena() + "'");
+//            ResultSet rs = SQL2.executeQuery();
+//            while (rs.next()) {
+//                result = true;
+//
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+        return true;
+    }
+    
+    
 }

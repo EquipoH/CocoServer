@@ -21,8 +21,9 @@ public class ServerManagment extends Thread {
     Socket vinculo;
     public String user = "sin usuario aun";
 
-            public DataInputStream entrada;
-            public DataOutputStream salida;
+    public DataInputStream entrada;
+    public DataOutputStream salida;
+
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
         this.conexiones = conexiones;
@@ -32,7 +33,6 @@ public class ServerManagment extends Thread {
     public void run() {
         try {
             System.out.println("Nuevo hilo creado");
-
 
             salida = new DataOutputStream(vinculo.getOutputStream());
             entrada = new DataInputStream(vinculo.getInputStream());
@@ -89,23 +89,21 @@ public class ServerManagment extends Thread {
                 } else if (opcion.equals("c")) {
                     //mandar mensaje
                     System.out.println("Se intenta mandar un mensaje desde: " + vinculo.getLocalAddress());
-                    String mensaje=entrada.readUTF();
-                    Gson gson=new Gson();
-                    pojoMensajesPendientes o=gson.fromJson(mensaje,pojoMensajesPendientes.class);
-                    boolean flat=false;
-                    for (ServerManagment serverma:conexiones){
-                        if(o.getDestinatario().equals(serverma.user)){
+                    String mensaje = entrada.readUTF();
+                    Gson gson = new Gson();
+                    pojoMensajesPendientes o = gson.fromJson(mensaje, pojoMensajesPendientes.class);
+                    boolean flat = false;
+                    for (ServerManagment serverma : conexiones) {
+                        if (o.getDestinatario().equals(serverma.user)) {
                             serverma.salida.writeUTF(mensaje);
-                            flat=true;
-                            
+                            flat = true;
+
                         }
                     }
-                    if(!flat){
+                    if (!flat) {
                         //mandar mensjae a la base de datos 
                     }
-                    
-                    
-                    
+
                 } else if (opcion.equals("d")) {
                     System.out.println(opcion);
                     //buscar informacion
@@ -136,14 +134,13 @@ public class ServerManagment extends Thread {
                     //usuarios conectados
 
                     System.out.println("Se solicito grupos desde: " + vinculo.getLocalAddress());
-                    String user =entrada.readUTF();
-                    System.out.println("el usuario a bucasr"+user);
-                    String grupos=helper.getGrupos(user);
-                    
-                    
+                    String user = entrada.readUTF();
+                    System.out.println("el usuario a bucasr" + user);
+                    String grupos = helper.getGrupos(user);
+
                     salida.writeUTF(grupos);
 
-                }else if (opcion.equals("h")) {
+                } else if (opcion.equals("h")) {
                     //listas de amigos
 
                     System.out.println("Se solicitaron las listas de amigos desde: " + vinculo.getLocalAddress());
@@ -154,7 +151,7 @@ public class ServerManagment extends Thread {
 
                     salida.writeUTF(listasDeAmigos);
 
-                }else if(opcion.equals("i")){
+                } else if (opcion.equals("i")) {
                     //amigos de una lista de maigos
 
                     System.out.println("Se solicitaron los amigos desde: " + vinculo.getLocalAddress());
@@ -164,6 +161,16 @@ public class ServerManagment extends Thread {
                     }
 
                     salida.writeUTF(amigos);
+                } else if (opcion.equals("j")) {
+                    //amigos de una lista de maigos
+
+                    System.out.println("Se mando una solicitud " + vinculo.getLocalAddress());
+                    String request =entrada.readUTF();
+                    String[] datos=request.split("/");
+                    helper.enviarSolicitud(datos[0], datos[1]);
+                    
+
+                    
                 }
 
             }
