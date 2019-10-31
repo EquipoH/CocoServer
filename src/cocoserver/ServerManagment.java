@@ -18,7 +18,7 @@ public class ServerManagment extends Thread {
     List<ServerManagment> conexiones;
 
     Socket vinculo;
-    public String user="sin usuario aun";
+    public String user = "sin usuario aun";
 
     ServerManagment(Socket _vinculo, List<ServerManagment> conexiones) {
         this.vinculo = _vinculo;
@@ -29,11 +29,11 @@ public class ServerManagment extends Thread {
     public void run() {
         try {
             System.out.println("Nuevo hilo creado");
-            
-            for(ServerManagment usuario:conexiones){
+
+            for (ServerManagment usuario : conexiones) {
                 System.out.println(usuario.user);
-        }
-            
+            }
+
             DataInputStream entrada;
             DataOutputStream salida;
 
@@ -108,6 +108,17 @@ public class ServerManagment extends Thread {
                     String[] info = datos.split("/");
                     String response = helper.restorePassword(info[0], info[1]);
                     salida.writeUTF(response);
+
+                } else if (opcion.equals("f")) {
+                    //usuarios conectados
+
+                    System.out.println("Se usuarios conectados desde: " + vinculo.getLocalAddress());
+                    String usuarios = "";
+                    for (ServerManagment usuario : conexiones) {
+                        usuarios += usuario.user + "/";
+                    }
+
+                    salida.writeUTF(usuarios);
 
                 }
 
