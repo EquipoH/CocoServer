@@ -7,12 +7,7 @@ public class pojoGrupo
 
     public pojoGrupo() {
     }
-    
-    /**
-     * @param idGrupo identifica el id del grupo
-     * @param nombre es el nombre del grupo
-     * @param dueno es el foreign key del dueño del grupo
-     */
+
     public pojoGrupo(double idGrupo, String nombre, String dueno) {
         this.idGrupo = idGrupo;
         this.nombre = nombre;
