@@ -9,6 +9,13 @@ public class pojoUsuarioGrupo
     public pojoUsuarioGrupo() {
     }
 
+    /**
+     * 
+     * @param idUsuarioGrupo identificador de un usuario en un grupo
+     * @param idGrupo foreign key hacia el grupo al que pertenece
+     * @param usuario foreign key hacia la tabla usuario del usuario
+     * @param solicitud bandera que indica si el usuario ha aceptado la solicitud de grupo o no
+     */
     public pojoUsuarioGrupo(double idUsuarioGrupo, double idGrupo, String usuario, char solicitud) {
         this.idUsuarioGrupo = idUsuarioGrupo;
         this.idGrupo = idGrupo;

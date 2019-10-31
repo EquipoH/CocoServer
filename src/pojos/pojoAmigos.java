@@ -10,6 +10,13 @@ public class pojoAmigos
     public pojoAmigos() {
     }
     
+    /**
+     * @param idAmigos Sirve para identifcar al amigo en una lista de amigos
+     * @param amigo tiene el foreign key del usuario
+     * @param listaAmigos tiene el foreign key de la lista de amigos a la que pertenece
+     * @param aceptado  es la bandera que indica si la solicitud de amistad fue aceptada o no
+     * @param apodo es el apodo del amigo en la lista de amigos
+     */
     public pojoAmigos(int idAmigos, String amigo, double listaAmigos, char aceptado, String apodo) {
         this.idAmigos = idAmigos;
         this.amigo = amigo;

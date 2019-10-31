@@ -16,6 +16,17 @@ public class pojoUsuario implements Serializable
     public pojoUsuario() {
     }
 
+    /**
+     * 
+     * @param usuario Es el correo con el que el usuario se registro
+     * @param nombre    Es el nombre del usuario
+     * @param apellidos Apellidos del usuario
+     * @param contrasena Contraseña del usuario
+     * @param correo Correo del usuario. Es el mismo que el usuario.
+     * @param conectado Bandera que indica si esta conectado el usuario o no.
+     * @param idPreguntaRecuperacion Foreign key hacia la pregunta de recuperacion que corresponde al usuario
+     * @param respuestaRecuperacion Respuesta de la pregunta de recuperacion del usuario.
+     */
     public pojoUsuario(String usuario, String nombre, String apellidos, String contrasena, String correo, char conectado, int idPreguntaRecuperacion, String respuestaRecuperacion) {
         this.usuario = usuario;
         this.nombre = nombre;

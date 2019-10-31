@@ -8,12 +8,18 @@ public class pojoListaAmigos
     public pojoListaAmigos() {
     }
 
+    /**
+     * 
+     * @param idListaAmigos  Es el identificador de la lista de amigos
+     * @param nombre Es el nombre de la lista de amigos
+     * @param dueno  Es un foreign key hacia el dueño de la lista de amigos
+     */
     public pojoListaAmigos(double idListaAmigos, String nombre, String dueno) {
         this.idListaAmigos = idListaAmigos;
         this.nombre = nombre;
         this.dueno = dueno;
     }
-
+    
     public double getIdListaAmigos() {
         return idListaAmigos;
     }
@@ -37,5 +43,6 @@ public class pojoListaAmigos
     public void setDueno(String dueno) {
         this.dueno = dueno;
     }
+    
     
 }
