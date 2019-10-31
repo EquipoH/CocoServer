@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import pojos.pojoGrupo;
 import  java.lang.reflect.Type;
+import pojos.pojoAmigos;
+import pojos.pojoListaAmigos;
 import pojos.pojoUsuario;
 
 /**
@@ -144,4 +146,63 @@ public class Helper {
         }
         return response;
     }
+    
+    public String getListasDeAmigos(String user) {
+        String response = "null";
+        PreparedStatement SQL;
+        Gson gson=new Gson();
+        ArrayList<pojoListaAmigos> arreglo=new ArrayList<pojoListaAmigos>();
+          
+        try {
+            System.out.println("aqui estoy");
+            SQL = con.prepareStatement("SELECT *FROM listaamigos where dueno='"+user+"'");
+            ResultSet rs = SQL.executeQuery();
+            while (rs.next()) {
+                System.out.println("Entre al ciclo");
+                pojoListaAmigos pojo=new pojoListaAmigos(rs.getInt("idListaAmigo"),rs.getString("nombre"),rs.getString("dueno"));
+                arreglo.add(pojo);
+            }
+            System.out.println("ser termino la busqueda");
+            if(arreglo.isEmpty()){
+                System.out.println("esta vacia");
+            }else{
+             response=gson.toJson(arreglo);
+             System.out.println(response);
+            }
+            System.out.println("hasta aqui todo bien");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
+    }
+    
+    public String getAmigosDeListaDeAmigos(String idListaAmigo) {
+        String response = "null";
+        PreparedStatement SQL;
+        Gson gson=new Gson();
+        ArrayList<pojoAmigos> arreglo=new ArrayList<>();
+          
+        try {
+            System.out.println("aqui estoy");
+            SQL = con.prepareStatement("SELECT *FROM amigos where listaAmigos="+idListaAmigo);
+            ResultSet rs = SQL.executeQuery();
+            while (rs.next()) {
+                System.out.println("Entre al ciclo");
+                pojoAmigos pojo=new pojoAmigos(rs.getInt("idAmigos"),rs.getString("amigo"),rs.getInt("listaAmigos"),(rs.getString("aceptado")).charAt(0),rs.getString("apodo"));
+                arreglo.add(pojo);
+            }
+            System.out.println("ser termino la busqueda");
+            if(arreglo.isEmpty()){
+                System.out.println("esta vacia");
+            }else{
+             response=gson.toJson(arreglo);
+             System.out.println(response);
+            }
+            System.out.println("hasta aqui todo bien");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
+    }
+    
 }

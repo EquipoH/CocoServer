@@ -126,15 +126,15 @@ public class ServerManagment extends Thread {
                     salida.writeUTF(grupos);
 
                 }else if (opcion.equals("h")) {
-                    //usuarios conectados
+                    //listas de amigos
 
-                    System.out.println("Se solicito amigos desde: " + vinculo.getLocalAddress());
-                    String usuarios = "";
-                    for (ServerManagment usuario : conexiones) {
-                        usuarios += usuario.user + "/";
+                    System.out.println("Se solicitaron las listas de amigos desde: " + vinculo.getLocalAddress());
+                    String listasDeAmigos = "";
+                    for (ServerManagment lista : conexiones) {
+                        listasDeAmigos += lista.user + "/";
                     }
 
-                    salida.writeUTF(usuarios);
+                    salida.writeUTF(listasDeAmigos);
 
                 }
 

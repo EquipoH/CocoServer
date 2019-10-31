@@ -3,13 +3,15 @@ public class pojoListaAmigos
 {
     private double idListaAmigos;
     private String nombre;
-
+    private String dueno;
+    
     public pojoListaAmigos() {
     }
 
-    public pojoListaAmigos(double idListaAmigos, String nombre) {
+    public pojoListaAmigos(double idListaAmigos, String nombre, String dueno) {
         this.idListaAmigos = idListaAmigos;
         this.nombre = nombre;
+        this.dueno = dueno;
     }
 
     public double getIdListaAmigos() {
@@ -27,4 +29,13 @@ public class pojoListaAmigos
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getDueno() {
+        return dueno;
+    }
+
+    public void setDueno(String dueno) {
+        this.dueno = dueno;
+    }
+    
 }
